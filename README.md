@@ -31,6 +31,11 @@
 
 ## Introduction
 
+> **Note**  
+>  
+> On a jailbroken PS4, the Isz glitch cure can now be applied directly with [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) using [Apollo Patches](https://github.com/bucanero/apollo-patches/pull/4).  
+> Furthermore I created patches for [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html).
+
 This guide is intended to help Bloodborne players access the cure to Isz Glitch, that was discovered, but not widely distributed.
 
 - The instructions on how to cure the glitch were created by adopting the original [Isz Glitch Cure Guide](./assets/chalice-flag-unlocking-and-isz-glitch-cure-by-azureevening.jpg) created by [AzureEvening](https://www.youtube.com/@azureevening9696).
@@ -218,7 +223,7 @@ From here the guide will show two possible solutions:
 
 If the character savegame is used on a regular PS4 console, you will need [Save Wizard for PS4 MAX Recommended](https://www.savewizard.net/), which unfortunately has to be paid for. Do not buy Save Wizard.online: PS4 Edition, since we need to use `advanced mode` which is only available in the MAX Edition.
 
-#### Step 0: Preperation
+#### Preperation
 
 You will need the following:
 
@@ -230,8 +235,8 @@ You will need the following:
 
 1. **Connect** a USB storage device to the PS4 system.
 2. **Go** to Settings > Application Saved Data Management > Saved Data in System Storage > Copy to USB Storage Device.
-3. **Select** Bloodborne
-4. **Select** Copy
+3. **Select** Bloodborne.
+4. **Select** Copy.
 
 #### Step 2: Modify the savegame with Save Wizard
 
@@ -256,8 +261,8 @@ D8000000 0100C0FF
 
 1. **Connect** the USB storage device to the PS4 system.
 2. **Go** to Settings > Application Saved Data Management > Saved Data on USB Storage Device > Copy to System Storage.
-3. **Select** Bloodborne
-4. **Select** Copy
+3. **Select** Bloodborne.
+4. **Select** Copy.
 
 Skip to [Conclusion](#conclusion).
 
@@ -265,31 +270,62 @@ Skip to [Conclusion](#conclusion).
 
 ### How to cure the Isz Glitch on a jailbroken PS4
 
-On a jailbroken PS4 we can use [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) to copy the characters savegame to USB device. The savegame will be decrypted automatically, means we can modify hex values using any hex editor.
+On a jailbroken PS4, there are several ways to cure the glitch:
 
-#### Step 0: Preperation
+1. Apply the Quick Code using [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) (recommended)
+2. Apply the Quick Code using [Apollo Save Tool library](https://github.com/bucanero/apollo-lib)
+3. Modify the savegame with a HexEditor like [HxD](https://mh-nexus.de/en/hxd/)
 
-You will need the following:
+---
 
-- A Jailbroken PS4 with:
-  - [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) latest version
+#### Preperation
+
+You will need the following, depending on your prefered way to cure:
+
+- A jailbroken PS4 with [Apollo Save Tool](https://github.com/bucanero/apollo-ps4)
+- A jailbroken PS4, a Computer with [Apollo Save Tool library](https://github.com/bucanero/apollo-lib)
 - [HxD](https://mh-nexus.de/en/hxd/) - Freeware Hex Editor and Disk Editor
 - USB Stick (extFAT formatted)
 
-#### Step 1: Activate offline account
+#### Activate offline account
 
 Make sure your offline PS4 account is activated.
 
-1. **Run** Apollo Save Tool
-2. **Select** User Tools > Activate PS4 Accounts
+1. **Run** Apollo Save Tool.
+2. **Select** User Tools > Activate PS4 Accounts.
 
 Your should see a list with all your accounts. An account is not activated when it has no auto-generated account ID, meaning `(0000000000000000)` following the username.
 
-3. **Select** the account > Auto-generated Account ID
-4. **Exit** Apollo Save Tool
-5. **Restart** the PS4 console
+3. **Select** the account > Auto-generated Account ID.
+4. **Exit** Apollo Save Tool.
+5. **Restart** the PS4 console.
+6. **Resign** your savegame files
 
-#### Step 2: Copy the savegame to USB
+If you need more help, check the video [PS4 Apollo Save Tool v1.4.0 Released](https://www.youtube.com/watch?v=tKgK7apPLTE) on YouTube.
+
+---
+
+#### 1. Apply the Quick Code using [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) (recommended)
+
+1. **Run** Apollo Save Tool.
+2. **Select** HDD Saves > Bloodborne (choose the correct CUSA).
+3. **Scroll** to the bottom of the cheat list.
+
+> **Warning**  
+> Remember to always backup your savegame!
+
+4. **Select** `Isz Glitch Cure (Character must be affected by Isz Glitch)`.
+5. **Expect** the patching completed and you should be done.
+
+Skip to [Conclusion](#conclusion).
+
+![Apollo Save Tool](./assets/apollo-save-tool-isz-glitch-cure-01_thumb.jpg)
+
+---
+
+#### 2. Apply the Quick Code using [Apollo Save Tool library](https://github.com/bucanero/apollo-lib)
+
+##### Step 1: Copy the savegame to USB
 
 1. **Connect** a USB storage device to the PS4 system.
 2. **Run** Apollo Save Tool > From HDD > Select Bloodborne savegame > Copy to USB Storage Device.
@@ -306,9 +342,7 @@ PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
               └─⫸ Account User ID
 ```
 
-#### Step 3: Modify the savegame
-
-**Either using Quick Code (experimental):**
+##### Step 2: Modify the savegame
 
 1. **Download** and extract the latest release of [Apollo Save Tool library](https://github.com/bucanero/apollo-lib/releases).
 2. **Copy** your savegame `userdata0000 - userdata0010` into the Apollo Save Tool library folder.
@@ -322,9 +356,8 @@ D8000000 0100C0FF
 18000000 0000FFFF
 ```
 
-> This is experimental and needs to be tested. Remember to always backup your savegame!
->
-> Please report any errors with the Quick Code.
+> **Warning**  
+> Remember to always backup your savegame!
 
 4. **Open** a Terminal > Run `./patcher userdata00XX.savepatch userdata00XX`.
 5. **Expect** the response `Patching completed: 1 codes applied` and you should be done.
@@ -333,7 +366,26 @@ Skip to [Conclusion](#conclusion).
 
 ---
 
-**Or by modifying the savegame with HxD:**
+#### 3. Modify the savegame with a HexEditor like [HxD](https://mh-nexus.de/en/hxd/)
+
+##### Step 1: Copy the savegame to USB
+
+1. **Connect** a USB storage device to the PS4 system.
+2. **Run** Apollo Save Tool > From HDD > Select Bloodborne savegame > Copy to USB Storage Device.
+
+The savegame will be copied into the folder:
+
+```
+PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
+              │         │        │
+              │         │        └─⫸ Random ID?
+              │         │
+              │         └─⫸ Game Title ID Number
+              │
+              └─⫸ Account User ID
+```
+
+##### Step 2: Modify the savegame
 
 1. **Connect** the USB storage device to the PC.
 2. **Create a backup of the PS4 folder located on the USB device!**
@@ -422,6 +474,13 @@ Hex editing related.
 - [Bloodborne Respec: How to change starting origin](https://imgur.com/a/UvVnpXU)
 - [Bloodborne - Gems, Rune and Armor HEX ID's](https://playersquared.com/forums/40-games/1681-bloodborne-gems-rune-armor-hex-ids-archive.html)
 
+Tools related.
+
+- [Save Wizard for PS4 MAX Recommended](https://www.savewizard.net/)
+- [Apollo Save Tool](https://github.com/bucanero/apollo-ps4)
+- [Apollo Save Tool library](https://github.com/bucanero/apollo-lib)
+- [HxD](https://mh-nexus.de/en/hxd/)
+
 ## Contributing
 
 All contributions are welcome. Feel free to submit a pull request to improve this guide.
@@ -432,7 +491,7 @@ Please read our [CONTRIBUTING](https://github.com/jrson83/bloodborne-isz-glitch-
 
 ### Contributors ✨
 
-<img src="/.github/assets/CONTRIBUTORS.svg" alt="Contributors List" />
+<img src=".github/assets/CONTRIBUTORS.svg" alt="Contributors List" />
 
 ## Credits
 
