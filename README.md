@@ -423,7 +423,7 @@ PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
 
 12. **Select** File > Save
 
-#### Step 4: Copy the savegame back to PS4 HDD
+#### Step 3: Copy the savegame back to PS4 HDD
 
 1. **Connect** the USB storage device to the PS4 system.
 2. **Run** Apollo Save Tool > From USB > Select Bloodborne savegame > Copy to HDD.
