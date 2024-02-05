@@ -31,10 +31,13 @@
 
 ## Introduction
 
-> **Note**  
->  
-> On a jailbroken PS4, the Isz glitch cure can now be applied directly with [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) using [Apollo Patches](https://github.com/bucanero/apollo-patches/pull/4).  
-> Furthermore I created patches for [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html).
+> **Note** 
+>
+> The quick code has been updated in February 2024 with the help of foxyhooligans to ensure that a character who has not yet looted all unique Isz items can still loot them after applying the patch. For more info on the Quick Code see this [Gist](https://gist.github.com/jrson83/11263531d557603ad12b45b98d227502). For new info related flags, see the note in [Modify the savegame with a HexEditor like HxD](#3-modify-the-savegame-with-a-hexeditor-like-hxd).  
+>
+> Also note that the new Quick Code has not been published to [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) yet. I will update this info accordingly.
+>
+> The [patches](https://github.com/bucanero/apollo-patches/pull/4) for [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html), can be applied directly with [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) or using [Save Wizard](https://www.savewizard.net/).
 
 This guide is intended to help Bloodborne players access the cure to Isz Glitch, that was discovered, but not widely distributed.
 
@@ -98,6 +101,10 @@ The following text was extracted from a conversation with AzureEvening on Jan 31
 
 The only two dungeon items that come to mind is [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html). Both of these items are in the official Bloodborne guide but are unobtainable in the game by normal means. They still exist in the files though, as it is possible to save edit them into your inventory. They just don’t have any drop table assigned to them.
 
+> **Note**  
+>
+> The [patches](https://github.com/bucanero/apollo-patches/pull/4) for [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html), can be applied directly with [Apollo Save Tool](https://github.com/bucanero/apollo-ps4) or using [Save Wizard](https://www.savewizard.net/).
+
 ### Check the characters inventory for related items
 
 - Once a weapon is looted, it will be available for purchase from the [Bath Messengers](https://www.bloodborne-wiki.com/2015/03/bath-messengers.html). So one way is to check their offer.
@@ -143,7 +150,7 @@ If you collect every possible coffin while playing through multiple chalices, it
 
 ### Check the event flags Hex value
 
-Following the next chapter, you should be able to determine the particular hex value within the affected characters savegame. A fully maxed out Isz with the glitch looks like `FF C0`, which means the character has looted every unique Isz item.
+Following the next chapter, you should be able to determine the particular hex value within the affected characters savegame. The byte has the possibility of being 4 things, `00`, `40`, `80`, or `C0`. A fully maxed out Isz with the glitch looks like `C0`, which means the character has looted every unique Isz item and the other 3 being partial glitch (info by foxyhooligans).
 
 > **Tip:** It is easier to cure the Isz Glitch after you looted all items or before looting any.
 
@@ -151,66 +158,51 @@ Following the next chapter, you should be able to determine the particular hex v
 
 In order to cure a characters Isz Glitch, we have to modify the related flags within the characters decrypted PS4 savegame.
 
-The Bloodborne savegame is not static, but we can use 4 bytes as operation starting point to create a Save Wizard Quick Code.
+We can do this by either using the  Quick Code which can be applied to a savegame using [Save Wizard](https://www.savewizard.net/), [Apollo Save Tool library](https://github.com/bucanero/apollo-lib) or [Apollo Save Tools](https://github.com/bucanero/apollo-ps4) or manually.
 
-`07 00 13 00`
-
-The player spawn point can be identified by `FF FF FF FF` following 4 bytes:
-
-- The Hunters Dream (spawnpoint): `B1 16 20 00`
-- The Hunters Dream (???): `A6 16 20 00`
-- The Hunters Dream (???): `A9 16 20 00`
-
-**Needs to be confirmed:**
-
-Looking at various savegames, the decimal offset between `07 00 13 00` and `B1 16 20 00` is static `338`.
-
-The decimal offset between `B1 16 20 00` and the Isz Glitch bytes `FF C0` is also static `3169`.
-
-Calculating the offset between `07 00 13 00` and the Isz Glitch `FF C0` bytes:
-
-`338 + 3169 = 3507 (dec) = DB3 (hex)`
-
-```
+```sh
 [Isz Glitch Cure]
-80010004 07001300 - Searches for 4 bytes of 07 00 13 00 once using Default Offset
-92000000 00000DB3 - Adjusts the pointer offset by adding a value of 338 + 3169 = 3507 dec = DB3 hex to the pointer
+80010008 03000000 - Searches for 8 bytes of 03 00 00 00 05 00 01 00 once using Default Offset
+05000100 00000000
+92000000 00000DD1 - Adjusts the pointer offset by adding a value of 3537 dec = DD1 hex to the pointer
+D8000000 020130FF - Tests and skips the following two code lines if 2 bytes from pointer equal `FF 30`
+D8000000 0103C0FF - Tests and skips the following code line if 2 bytes from pointer equal less than `FF C0`
+08000001 00000030 - Writes 1 byte with 1 offset from pointer, replacing a value less than `C0` with `30` (partial Isz glitch fix)
 D8000000 0100C0FF - Tests if 2 bytes from pointer equal `FF C0`, skips the following code line if operation fails
-18000000 0000FFFF - Writes 2 bytes from pointer, replacing `FF C0` with `FF FF`
+08000001 000000FF - Writes 1 byte with 1 offset from pointer, replacing `C0` with `FF` (fully maxed out Isz glitch fix)
 ```
-
-Using [Apollo Save Tool library](https://github.com/bucanero/apollo-lib) I created a Quick Code which can be applied to a savegame using [Save Wizard](https://www.savewizard.net/), [Apollo Save Tool library](https://github.com/bucanero/apollo-lib) or [Apollo Save Tools](https://github.com/bucanero/apollo-ps4).
 
 Here is an example output when using the patch with Apollo Save Tool library:
 
-```bash
+```sh
 ❯ ./patcher userdata0000.savepatch 1 userdata0000
 
-Apollo cheat patcher v0.3.0 - (c) 2022 by Bucanero
+Apollo cheat patcher v0.6.0 - (c) 2022 by Bucanero
 
 [i] Applying codes [1] to userdata0000...
 
 [+] Applying code #1...
 - Game Genie Code
 - Applying [Isz Glitch Cure] to 'userdata0000'...
-- Searching (len=4 count=1) ...
-- ----- Search 4 bytes -----
-- 000000: 07 00 13 00
-- ----- Search 4 bytes -----
-- Search pointer = 171450 (0x29DBA)
-- Byte Test (0002AB6D) C0FF = C0FF
-- Wrote 2 bytes (FFFF) to 0x2AB6D
+- Searching (len=8 count=1) ...
+- ----- Search 8 bytes -----
+- 000000: 03 00 00 00 05 00 01 00                          | ........
+- ----- Search 8 bytes -----
+- Search pointer = 152720 (0x25490)
+- Pointer set to offset 0x26261 (156257)
+- Byte Test (00026261) C0FF != 30FF
+- Byte Test (00026261) C0FF < C0FF
+- Skipping 1 lines...
+- Byte Test (00026261) C0FF = C0FF
+- Wrote 1 bytes (FF) to 0x26262
 - OK
 
 Patching completed: 1 codes applied
 ```
 
-## Cure the Isz Glitch
+For more info on the Quick Code see this [Gist](https://gist.github.com/jrson83/11263531d557603ad12b45b98d227502).
 
-1. **Start** Bloodborne and load the character you want to cure
-2. **Position** the character at the initial spawn point in the [Hunter's Dream](https://www.bloodborne-wiki.com/2015/03/dream-refuge.html)
-3. **Use** a lamp to transport back into Hunter's Dream. If you accidentally moved the character in the Dream, use a [Bold Hunter's Mark](https://www.bloodborne-wiki.com/2015/03/bold-hunters-mark.html) to reset to initial spawn.
-4. **Press** Start > Settings > Quit > Close Bloodborne.
+## Cure the Isz Glitch
 
 From here the guide will show two possible solutions:
 
@@ -247,14 +239,19 @@ You will need the following:
 
 Please follow the tutorial [How to Add Quick Code On Save Wizard](https://xdgmods.com/how-to-add-quick-code-on-save-wizard/) from xdgmods.com.
 
-```bash
+```sh
 [Isz Glitch Cure]
-80010004 07001300
-92000000 00000DB3
+80010008 03000000
+05000100 00000000
+92000000 00000DD1
+D8000000 020130FF
+D8000000 0103C0FF
+08000001 00000030
 D8000000 0100C0FF
-18000000 0000FFFF
+08000001 000000FF
 ```
 
+> **Warning**  
 > This is experimental and needs to be tested. Remember to always backup your savegame!
 
 #### Step 4: Copy the savegame back to PS4 HDD
@@ -319,6 +316,8 @@ If you need more help, check the video [PS4 Apollo Save Tool v1.4.0 Released](ht
 
 Skip to [Conclusion](#conclusion).
 
+> Furthermore I created patches for [Guidance tier 3](https://www.bloodborne-wiki.com/2015/11/guidance.html) rune and [Revered Great One Coldblood](https://www.bloodborne-wiki.com/2017/05/revered-great-one-coldblood.html).
+
 ![Apollo Save Tool](./assets/apollo-save-tool-isz-glitch-cure-01_thumb.jpg)
 
 ---
@@ -348,12 +347,16 @@ PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
 2. **Copy** your savegame `userdata0000 - userdata0010` into the Apollo Save Tool library folder.
 3. **Create** a file `userdata00XX.savepatch` > Copy & paste the following Quick Code:
 
-```bash
+```sh
 [Isz Glitch Cure]
-80010004 07001300
-92000000 00000DB3
+80010008 03000000
+05000100 00000000
+92000000 00000DD1
+D8000000 020130FF
+D8000000 0103C0FF
+08000001 00000030
 D8000000 0100C0FF
-18000000 0000FFFF
+08000001 000000FF
 ```
 
 > **Warning**  
@@ -367,6 +370,20 @@ Skip to [Conclusion](#conclusion).
 ---
 
 #### 3. Modify the savegame with a HexEditor like [HxD](https://mh-nexus.de/en/hxd/)
+
+> **Note**  
+>
+> Information by foxyhooligans:  
+>
+> If you want to apply the fix on a character who has not yet looted all unique Isz items, the byte has the possibility of being 3 things, `00`, `40`, `80`.  
+> Instead of changing the byte to `FF`, change it to `30` and you still can loot unique isz items after applying the patch.
+
+##### Step 0: Set the character spawn
+
+1. **Start** Bloodborne and load the character you want to cure
+2. **Position** the character at the initial spawn point in the [Hunter's Dream](https://www.bloodborne-wiki.com/2015/03/dream-refuge.html)
+3. **Use** a lamp to transport back into Hunter's Dream. If you accidentally moved the character in the Dream, use a [Bold Hunter's Mark](https://www.bloodborne-wiki.com/2015/03/bold-hunters-mark.html) to reset to initial spawn.
+4. **Press** Start > Settings > Quit > Close Bloodborne.
 
 ##### Step 1: Copy the savegame to USB
 
@@ -409,7 +426,7 @@ PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
 
 9. The cursor should be placed automatically at the first char of one `FF`, followed by `0C`.
 
-> These two bytes represent the flags where the game registers having looted unique items from Isz. They change to FF when you have looted all the items indexed in them. The first one maxes out naturally, while the second one gets stuck on `C0` and fails to reach the maximum.
+> These two bytes represent the flags where the game registers having looted unique items from Isz. They change to FF when you have looted all the items indexed in them. The first one maxes out naturally, while the second one gets stuck on `C0` and fails to reach the maximum.  
 
 ![HxD Search](./assets/hxd-05.png)
 
