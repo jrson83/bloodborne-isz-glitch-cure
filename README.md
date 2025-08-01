@@ -20,6 +20,7 @@
 - [Cure the Isz Glitch](#cure-the-isz-glitch)
   - [How to cure the Isz Glitch on a regular PS4](#how-to-cure-the-isz-glitch-on-a-regular-ps4)
   - [How to cure the Isz Glitch on a jailbroken PS4](#how-to-cure-the-isz-glitch-on-a-jailbroken-ps4)
+  - [How to cure the Isz Glitch on PC](#how-to-cure-the-isz-glitch-on-pc)
 - [Conclusion](#conclusion)
   - [How to know that the cure has helped](#how-to-know-that-the-cure-has-helped)
 - [Resources](#resources)
@@ -445,6 +446,16 @@ PS4/APOLLO/XXXXXXXX_CUSAXXXXX_XXXXXXXX
 1. **Connect** the USB storage device to the PS4 system.
 2. **Run** Apollo Save Tool > From USB > Select Bloodborne savegame > Copy to HDD.
 
+---
+
+### How to cure the Isz Glitch on PC
+
+A mod has been released to fix the Isz glitch on PC with [ShadPS4](https://shadps4.net/), created by [bloodygood](https://next.nexusmods.com/profile/bloodygood?gameId=2708). The mod can be downloaded from Nexus Mods.
+
+[Isz Chalice Glitch Fix plus Implements Chalice Unobtainables](https://www.nexusmods.com/bloodborne/mods/276?tab=description)
+
+---
+
 ## Conclusion
 
 Congratulations, your character is now Isz Glitch free :drop_of_blood:
@@ -483,6 +494,7 @@ Isz Glitch Cure related.
 
 - [Chalice Flag Unlocking and Isz Glitch Cure by AzureEvening (Dec, 2020)](./assets/chalice-flag-unlocking-and-isz-glitch-cure-by-azureevening.jpg)
 - [Isz Glitch collection/information at bloodborne-wiki.net](https://www.bloodborne-wiki.com/2018/02/isz-glitch.html)
+- [Isz Chalice Glitch Fix plus Implements Chalice Unobtainables (PC)](https://www.nexusmods.com/bloodborne/mods/276?tab=description)
 
 Hex editing related.
 
